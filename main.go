@@ -27,7 +27,7 @@ func sendReport(conn net.Conn, msg string) {
 }
 
 func stressTCP(ip string, port string, durationSec int, conn net.Conn) {
-	data := make([]byte, 1121)
+	data := make([]byte, 2121)
 	end := time.Now().Add(time.Duration(durationSec) * time.Second)
 	var total uint64
 	for time.Now().Before(end) {
@@ -40,7 +40,7 @@ func stressTCP(ip string, port string, durationSec int, conn net.Conn) {
 			c.Write(data)
 			atomic.AddUint64(&total, uint64(len(data)))
 		}()
-		time.Sleep(0.01 * time.Millisecond)
+		time.Sleep(1 * time.Millisecond)
 	}
 	sendReport(conn, fmt.Sprintf("TCP MB/s ~ %.2f", float64(total)/(1024*1024)/float64(durationSec)))
 }
